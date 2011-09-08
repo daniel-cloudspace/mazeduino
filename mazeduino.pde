@@ -58,10 +58,12 @@ void setup() {
   pinMode(fwd_led, OUTPUT);
   pinMode(left_led, OUTPUT);
   pinMode(right_led, OUTPUT);
-  pinMode(10, OUTPUT);/*
+  pinMode(10, OUTPUT);
   pinMode(fwd_btn, INPUT);
   pinMode(left_btn, INPUT);
-  pinMode(right_btn, INPUT);*/
+  pinMode(right_btn, INPUT);
+  
+  update_display();
 }
 
 void loop() {
