@@ -1,3 +1,10 @@
+#define fwd_btn A0
+#define left_btn A1
+#define right_btn A2
+#define fwd_led 12
+#define left_led 13
+#define right_led 11
+
 const int up = 0;
 const int right = 1;
 const int down = 2;
@@ -46,24 +53,48 @@ void setup() {
     }
   }
   
-  /**
-   * Set interrupts for buttons
-   */
-  attachInterrupt(0, turn_left, FALLING);
-  attachInterrupt(1, forward, FALLING);
-  attachInterrupt(2, turn_right, FALLING);
+  Serial.begin(9600);
+  
+  pinMode(fwd_led, OUTPUT);
+  pinMode(left_led, OUTPUT);
+  pinMode(right_led, OUTPUT);
+  pinMode(10, OUTPUT);/*
+  pinMode(fwd_btn, INPUT);
+  pinMode(left_btn, INPUT);
+  pinMode(right_btn, INPUT);*/
 }
 
 void loop() {
+  if (digitalRead(fwd_btn) == HIGH) {
+    forward();
+    update_display();
+    
+  } else if (digitalRead(left_btn) == HIGH) {
+    turn_left();
+  } else if (digitalRead(right_btn) == HIGH) {
+    turn_right();
+  }
   
 }
 
+void update_display() {
+  int forward = maze[x][y][orientation];
+  int left = maze[x][y][(orientation+4)%4];
+  int right = maze[x][y][(orientation+1)%4];
+  digitalWrite(fwd_led, forward ? HIGH : LOW);
+  digitalWrite(left_led, left ? HIGH : LOW);
+  digitalWrite(right_led, right ? HIGH : LOW);
+}
+
 void forward() {
+  if (orientation == up && y > 0 && maze[x][y][0] == 0) y--;
+  if (orientation == right && x < maze_width && maze[x][y][1] == 0) x++;
+  if (orientation == down && y < maze_height && maze[x][y][2] == 0) y++;
+  if (orientation == left && x > 0 && maze[x][y][3] == 0) x--;
   
 }
 void turn_left() {
-  orientation--;
-  if (orientation < 0) orientation = 4;
+  orientation = (orientation + 4) % 4;
 }
 void turn_right() {
   orientation = (orientation + 1) % 4; 
