@@ -53,12 +53,9 @@ void setup() {
     }
   }
   
-  Serial.begin(9600);
-  
   pinMode(fwd_led, OUTPUT);
   pinMode(left_led, OUTPUT);
   pinMode(right_led, OUTPUT);
-  pinMode(10, OUTPUT);
   pinMode(fwd_btn, INPUT);
   pinMode(left_btn, INPUT);
   pinMode(right_btn, INPUT);
@@ -70,7 +67,6 @@ void loop() {
   if (digitalRead(fwd_btn) == HIGH) {
     forward();
     update_display();
-    
   } else if (digitalRead(left_btn) == HIGH) {
     turn_left();
   } else if (digitalRead(right_btn) == HIGH) {
@@ -93,7 +89,6 @@ void forward() {
   if (orientation == right && x < maze_width && maze[x][y][1] == 0) x++;
   if (orientation == down && y < maze_height && maze[x][y][2] == 0) y++;
   if (orientation == left && x > 0 && maze[x][y][3] == 0) x--;
-  
 }
 void turn_left() {
   orientation = (orientation + 4) % 4;
